@@ -79,6 +79,22 @@ body {
   opacity: .45;
 }
 
+.card.last-clicked {
+  box-shadow: 0 0 0 3px rgba(69,149,210,0.18), 0 1px 3px rgba(0,0,0,0.06);
+  position: relative;
+}
+
+.card.last-clicked::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 10px;
+  height: 10px;
+  background: rgba(69,149,210,0.95);
+  border-radius: 50%;
+}
+
 .caption {
   font-size: .8rem;
   margin-top: .5rem;
