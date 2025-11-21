@@ -70,6 +70,15 @@ body {
   object-fit: contain
 }
 
+.card {
+  transition: filter .15s ease, opacity .15s ease;
+}
+
+.card.greyed {
+  filter: grayscale(100%);
+  opacity: .45;
+}
+
 .caption {
   font-size: .8rem;
   margin-top: .5rem;

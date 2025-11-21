@@ -12,6 +12,30 @@ const normalizeRoute = (hash) => {
 
 export default function App() {
   const [route, setRoute] = useState(normalizeRoute())
+  const [greyed, setGreyed] = useState(() => new Set())
+
+  // load saved greyed ids from localStorage
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('greyed')
+      if (raw) {
+        const arr = JSON.parse(raw)
+        if (Array.isArray(arr)) setGreyed(new Set(arr))
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, [])
+
+  const toggleGrey = (id) => {
+    setGreyed(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      try { localStorage.setItem('greyed', JSON.stringify([...next])) } catch (e) {}
+      return next
+    })
+  }
 
   useEffect(() => {
     const onHash = () => setRoute(normalizeRoute(window.location.hash))
@@ -49,9 +73,9 @@ export default function App() {
       </header>
 
       <main>
-        {route === 'gen_1' && <Gen1 />}
-        {route === 'gen_2' && <Gen2 />}
-        {route === 'gen_3' && <Gen3 />}
+        {route === 'gen_1' && <Gen1 greyed={greyed} toggleGrey={toggleGrey} />}
+        {route === 'gen_2' && <Gen2 greyed={greyed} toggleGrey={toggleGrey} />}
+        {route === 'gen_3' && <Gen3 greyed={greyed} toggleGrey={toggleGrey} />}
       </main>
     </div>
   )
