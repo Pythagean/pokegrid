@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Gen1 from './pages/gen_1'
 import Gen2 from './pages/gen_2'
 import Gen3 from './pages/gen_3'
+import { spritesBase, handleImgError } from './imageUtils'
 
 const normalizeRoute = (hash) => {
   const h = (hash || window.location.hash || '').replace('#', '')
@@ -27,9 +28,23 @@ export default function App() {
     <div className="app">
       <header className="topbar" role="banner">
         <nav className="gen-controls" aria-label="Generation selection">
-          <button type="button" className={`gen-btn ${route === 'gen_1' ? 'active' : ''}`} onClick={() => navigate('gen_1')}>Gen 1</button>
-          <button type="button" className={`gen-btn ${route === 'gen_2' ? 'active' : ''}`} onClick={() => navigate('gen_2')}>Gen 2</button>
-          <button type="button" className={`gen-btn ${route === 'gen_3' ? 'active' : ''}`} onClick={() => navigate('gen_3')}>Gen 3</button>
+          <button type="button" className={`gen-btn ${route === 'gen_1' ? 'active' : ''}`} onClick={() => navigate('gen_1')} aria-pressed={route === 'gen_1'}>
+            <img className="btn-sprite" src={`${spritesBase}/1-front.png`} alt="" onError={handleImgError} />
+            <img className="btn-sprite" src={`${spritesBase}/4-front.png`} alt="" onError={handleImgError} />
+            <img className="btn-sprite" src={`${spritesBase}/7-front.png`} alt="" onError={handleImgError} />
+          </button>
+
+          <button type="button" className={`gen-btn ${route === 'gen_2' ? 'active' : ''}`} onClick={() => navigate('gen_2')} aria-pressed={route === 'gen_2'}>
+            <img className="btn-sprite" src={`${spritesBase}/152-front.png`} alt="" onError={handleImgError} />
+            <img className="btn-sprite" src={`${spritesBase}/155-front.png`} alt="" onError={handleImgError} />
+            <img className="btn-sprite" src={`${spritesBase}/158-front.png`} alt="" onError={handleImgError} />
+          </button>
+
+          <button type="button" className={`gen-btn ${route === 'gen_3' ? 'active' : ''}`} onClick={() => navigate('gen_3')} aria-pressed={route === 'gen_3'}>
+            <img className="btn-sprite" src={`${spritesBase}/252-front.png`} alt="" onError={handleImgError} />
+            <img className="btn-sprite" src={`${spritesBase}/255-front.png`} alt="" onError={handleImgError} />
+            <img className="btn-sprite" src={`${spritesBase}/258-front.png`} alt="" onError={handleImgError} />
+          </button>
         </nav>
       </header>
 
