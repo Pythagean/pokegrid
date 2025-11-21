@@ -1,0 +1,24 @@
+:root{
+  --bg:#f7f7f8;
+  --card:#ffffff;
+}
+*{box-sizing:border-box}
+body{font-family:Segoe UI, Roboto, -apple-system, system-ui, Arial; margin:0; padding:1rem; background:var(--bg); color:#111}
+.app header h1{margin:0}
+.controls{display:flex;gap:.5rem;margin:1rem 0;flex-wrap:wrap}
+.controls input{padding:.5rem;border-radius:6px;border:1px solid #ccc}
+.controls button{padding:.5rem 1rem;border-radius:6px;border:1px solid #888;background:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.75rem}
+.card{background:var(--card);border-radius:8px;padding:.5rem;display:flex;flex-direction:column;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.card img{max-width:100%;height:100px;object-fit:contain}
+.caption{font-size:.8rem;margin-top:.5rem;word-break:break-word;text-align:center}
+.error{color:#b00020;margin-bottom:1rem}
+footer{margin-top:1rem;font-size:.85rem;color:#444}
+/* Fixed top header for generation buttons */
+.app{padding-top:72px}
+.topbar{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:center;background:var(--card);box-shadow:0 2px 8px rgba(0,0,0,0.08);z-index:1000;padding:0 1rem}
+.gen-controls{display:flex;gap:.5rem}
+.gen-btn{padding:.5rem 1rem;border-radius:8px;border:1px solid #888;background:#fff;cursor:pointer}
+.gen-btn:active{transform:translateY(1px)}
+.gen-btn.active{background:#0078d4;color:#fff;border-color:transparent}
+.gen-btn:focus{outline:2px solid #005a9e}
