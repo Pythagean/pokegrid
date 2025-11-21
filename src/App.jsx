@@ -75,9 +75,9 @@ export default function App() {
       </header>
 
       <main>
-        {route === 'gen_1' && <Gen1 greyed={greyed} toggleGrey={toggleGrey} lastClicked={lastClicked} />}
-        {route === 'gen_2' && <Gen2 greyed={greyed} toggleGrey={toggleGrey} lastClicked={lastClicked} />}
-        {route === 'gen_3' && <Gen3 greyed={greyed} toggleGrey={toggleGrey} lastClicked={lastClicked} />}
+        {route === 'gen_1' && <Gen1 greyed={greyed} toggleGrey={toggleGrey} lastClicked={lastClicked} setAnchor={setLastClicked} />}
+        {route === 'gen_2' && <Gen2 greyed={greyed} toggleGrey={toggleGrey} lastClicked={lastClicked} setAnchor={setLastClicked} />}
+        {route === 'gen_3' && <Gen3 greyed={greyed} toggleGrey={toggleGrey} lastClicked={lastClicked} setAnchor={setLastClicked} />}
       </main>
     </div>
   )
