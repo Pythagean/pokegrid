@@ -1,7 +1,9 @@
 {
   "name": "pokegrid",
+  "type": "module",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Pythagean.github.io/pokegrid/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -15,6 +17,7 @@
   },
   "devDependencies": {
     "vite": "^5.0.0",
-    "gh-pages": "^5.0.0"
+    "gh-pages": "^5.0.0",
+    "@vitejs/plugin-react": "^5.0.0"
   }
 }
