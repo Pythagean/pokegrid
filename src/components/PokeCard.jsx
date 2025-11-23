@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { handleImgError, loadingIcon } from '../imageUtils'
 
-export default function PokeCard({ id, src, alt, isGrey, isLast, toggleGrey, setAnchor }) {
+export default function PokeCard({ id, src, alt, isGrey, isLast, onSelect }) {
   const [loading, setLoading] = useState(true)
   const [currentSrc, setCurrentSrc] = useState(src)
   const [triedAlt, setTriedAlt] = useState(false)
@@ -25,15 +25,15 @@ export default function PokeCard({ id, src, alt, isGrey, isLast, toggleGrey, set
         // treat a short tap (no move) as a toggle; mark handled to avoid duplicate click
         if (!el._touchMoved) {
           el._touchHandled = true
-          toggleGrey(id, false)
+          onSelect(id, false)
         }
       }}
       onClick={(e) => {
         const el = e.currentTarget
         if (el._touchHandled) { el._touchHandled = false; return }
-        toggleGrey(id, e.shiftKey)
+        onSelect(id, e.shiftKey)
       }}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleGrey(id, false) } }}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(id, false) } }}
       aria-pressed={isGrey}
     >
       <div className={`img-wrap ${loading ? 'loading' : 'loaded'}`}>

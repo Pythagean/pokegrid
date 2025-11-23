@@ -2,7 +2,7 @@ import React from 'react'
 import { base } from '../imageUtils'
 import PokeCard from '../components/PokeCard'
 
-export default function Gen2({ greyed = new Set(), toggleGrey = () => {}, lastClicked = null, setAnchor = () => {} }) {
+export default function Gen2({ greyed = new Set(), onSelect = () => {}, lastClicked = null }) {
   const numbers = Array.from({ length: 100 }, (_, i) => 152 + i) // 152..251
   return (
     <div className="grid">
@@ -13,8 +13,7 @@ export default function Gen2({ greyed = new Set(), toggleGrey = () => {}, lastCl
           src={`${base}/${n}.png`}
           isGrey={greyed.has(n)}
           isLast={lastClicked === n}
-          toggleGrey={toggleGrey}
-          setAnchor={setAnchor}
+          onSelect={onSelect}
         />
       ))}
     </div>

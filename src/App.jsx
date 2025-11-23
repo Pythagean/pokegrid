@@ -16,6 +16,7 @@ export default function App() {
   const [lastClicked, setLastClicked] = useState(null)
   const [swipeOffset, setSwipeOffset] = useState(0)
   const [isSwipingVisual, setIsSwipingVisual] = useState(false)
+  const [rangeMode, setRangeMode] = useState(false)
 
   // load saved greyed ids from localStorage
   // No longer loading from localStorage, session-only greyed state
@@ -36,7 +37,6 @@ export default function App() {
         else next.add(id)
       }
       // No persistence: do NOT write to localStorage (session-only)
-      setLastClicked(id)
       return next
     })
   }
@@ -50,6 +50,32 @@ export default function App() {
   const navigate = (to) => {
     window.location.hash = to
     setRoute(normalizeRoute(to))
+  }
+
+  // handle select events coming from cards (encapsulates range-mode behavior)
+  const onSelect = (id, shiftKey = false) => {
+    if (rangeMode) {
+      // If no anchor, set anchor (do not toggle)
+      if (lastClicked == null) {
+        setLastClicked(id)
+        return
+      }
+      // If tapping the same anchor, clear it
+      if (lastClicked === id) {
+        setLastClicked(null)
+        return
+      }
+      // anchor exists and different id -> perform range toggle using toggleGrey with shift
+      toggleGrey(id, true)
+      // clear anchor after range operation
+      setLastClicked(null)
+      return
+    }
+
+    // normal behavior (desktop shift supported)
+    toggleGrey(id, shiftKey)
+    // set lastClicked for single selection flows
+    setLastClicked(id)
   }
 
   // Mobile swipe handling: left/right swipe navigates between gens
@@ -122,15 +148,17 @@ export default function App() {
             <img className="btn-sprite" src={`${spritesBase}/258-front.png`} alt="" onError={handleImgError} />
           </button>
         </nav>
-        
+        <button type="button" className={`range-toggle ${rangeMode ? 'active' : ''}`} onClick={() => { setLastClicked(null); setRangeMode(v => !v) }} aria-pressed={rangeMode} title="Range select">
+          Range Mode
+        </button>
       </header>
       <div className="swipe-viewport" style={{ transform: `translateX(${swipeOffset}px)`, transition: isSwipingVisual ? 'none' : 'transform .18s ease' }}>
         <div className="swipe-chev left" style={{ opacity: isSwipingVisual ? Math.min(1, Math.abs(swipeOffset) / 120) : 0 }}>‹</div>
         <div className="swipe-chev right" style={{ opacity: isSwipingVisual ? Math.min(1, Math.abs(swipeOffset) / 120) : 0 }}>›</div>
         <main>
-        {route === 'gen_1' && <Gen1 greyed={greyed} toggleGrey={toggleGrey} lastClicked={lastClicked} setAnchor={setLastClicked} />}
-        {route === 'gen_2' && <Gen2 greyed={greyed} toggleGrey={toggleGrey} lastClicked={lastClicked} setAnchor={setLastClicked} />}
-        {route === 'gen_3' && <Gen3 greyed={greyed} toggleGrey={toggleGrey} lastClicked={lastClicked} setAnchor={setLastClicked} />}
+        {route === 'gen_1' && <Gen1 greyed={greyed} onSelect={onSelect} lastClicked={lastClicked} />}
+        {route === 'gen_2' && <Gen2 greyed={greyed} onSelect={onSelect} lastClicked={lastClicked} />}
+        {route === 'gen_3' && <Gen3 greyed={greyed} onSelect={onSelect} lastClicked={lastClicked} />}
         </main>
       </div>
     </div>
