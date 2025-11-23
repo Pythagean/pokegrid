@@ -56,10 +56,41 @@ body {
   position: relative;
 }
 
-.card img {
-  max-width: 100%;
-  height: 100px;
-  object-fit: contain;
+.img-wrap{
+  width:100%;
+  height:100px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.img-wrap .main-img{
+  max-width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+/* Fade image in and loading icon out */
+.img-wrap .main-img {
+  opacity: 0;
+  transition: opacity .24s ease .12s; /* start after the loader fades */
+  position: relative;
+  z-index: 1;
+}
+.img-wrap.loading .loading-icon {
+  opacity: 1;
+  transition: opacity .12s ease; /* quick fade out */
+  z-index: 2;
+}
+.img-wrap.loaded .main-img {
+  opacity: 1;
+}
+.img-wrap.loaded .loading-icon {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .12s ease;
 }
 
 .card {

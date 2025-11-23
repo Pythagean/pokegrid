@@ -3,6 +3,8 @@ import { handleImgError, loadingIcon } from '../imageUtils'
 
 export default function PokeCard({ id, src, alt, isGrey, isLast, toggleGrey, setAnchor }) {
   const [loading, setLoading] = useState(true)
+  const [currentSrc, setCurrentSrc] = useState(src)
+  const [triedAlt, setTriedAlt] = useState(false)
 
   return (
     <div
@@ -41,18 +43,33 @@ export default function PokeCard({ id, src, alt, isGrey, isLast, toggleGrey, set
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleGrey(id, false) } }}
       aria-pressed={isGrey}
     >
-      {loading && (
+      <div className={`img-wrap ${loading ? 'loading' : 'loaded'}`}>
         <img className="loading-icon" src={loadingIcon} alt="loading" />
-      )}
 
-      <img
-        src={src}
-        alt={alt}
-        loading="lazy"
-        onLoad={() => setLoading(false)}
-        onError={(e) => { handleImgError(e); setLoading(false) }}
-        style={{ display: loading ? 'none' : 'block' }}
-      />
+        <img
+          src={currentSrc}
+          alt={alt}
+          onLoad={() => {
+            console.debug('[PokeCard] loaded', id, currentSrc)
+            setLoading(false)
+          }}
+          onError={(e) => {
+            console.warn('[PokeCard] image error', id, currentSrc)
+            // Try a CDN fallback (jsDelivr) once, then fall back to placeholder
+            if (!triedAlt && typeof currentSrc === 'string' && currentSrc.includes('raw.githubusercontent.com')) {
+              const altSrc = currentSrc.replace('https://raw.githubusercontent.com/Pythagean/pokedle_assets/main/', 'https://cdn.jsdelivr.net/gh/Pythagean/pokedle_assets@main/')
+              setTriedAlt(true)
+              setLoading(true)
+              setCurrentSrc(altSrc)
+              return
+            }
+            // if retrying didn't help, set placeholder
+            handleImgError(e)
+            setLoading(false)
+          }}
+          className="main-img"
+        />
+      </div>
     </div>
   )
 }
