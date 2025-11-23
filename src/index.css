@@ -128,7 +128,7 @@ footer {
 
 /* Fixed top header for generation buttons */
 .app {
-  padding-top: 72px
+  padding-top: 120px;
 }
 
 .topbar {
@@ -136,14 +136,52 @@ footer {
   top: 0;
   left: 0;
   right: 0;
-  height: 64px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   background: var(--card);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   z-index: 1000;
-  padding: 0 1rem
+  padding: 8px 1rem;
+  gap: .5rem;
+}
+
+.bulk-controls {
+  display: flex;
+  gap: .5rem;
+  margin-right: 1rem;
+  flex-basis: 100%;
+  justify-content: center;
+  margin-bottom: .25rem;
+  align-items: center;
+}
+
+.bulk-controls .range-toggle {
+  margin-left: auto;
+}
+
+.gen-controls {
+  flex-basis: 100%;
+  justify-content: center;
+  display: flex;
+  gap: .5rem;
+}
+.bulk-btn {
+  padding: .35rem .6rem;
+  border-radius: 8px;
+  border: 1px solid #cbd8e3;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+.bulk-btn:hover { background: #f3f7fb }
+
+/* Match bulk buttons height with gen buttons for a neat aligned look */
+.bulk-btn, .range-toggle, .gen-btn {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
 }
 
 /* Swipe chevrons shown while interacting on mobile */
@@ -203,7 +241,6 @@ footer {
   border: 1px solid #cbd8e3;
   background: #fff;
   cursor: pointer;
-  font-size: 12px;
   font-weight: 600;
   display: none; /* hide on desktop by default; shown on mobile via media query */
 }
@@ -261,7 +298,7 @@ footer {
 
   /* Make gen buttons and sprites smaller on mobile */
   .gen-controls { gap: .25rem }
-  .gen-btn { padding: .25rem .25rem; gap: .25rem }
+  .gen-btn { padding: .5rem .5rem; gap: .25rem }
   .btn-sprite { width: 28px; height: 28px }
   .btn-label { font-size: .85rem }
 }

@@ -52,6 +52,32 @@ export default function App() {
     setRoute(normalizeRoute(to))
   }
 
+  const getGenRange = (r) => {
+    if (r === 'gen_2') return [152, 251]
+    if (r === 'gen_3') return [252, 386]
+    return [1, 151]
+  }
+
+  const selectAllCurrentGen = () => {
+    const [start, end] = getGenRange(route)
+    setGreyed(prev => {
+      const next = new Set(prev)
+      for (let i = start; i <= end; i++) next.add(i)
+      return next
+    })
+    setLastClicked(null)
+  }
+
+  const deselectAllCurrentGen = () => {
+    const [start, end] = getGenRange(route)
+    setGreyed(prev => {
+      const next = new Set(prev)
+      for (let i = start; i <= end; i++) next.delete(i)
+      return next
+    })
+    setLastClicked(null)
+  }
+
   // handle select events coming from cards (encapsulates range-mode behavior)
   const onSelect = (id, shiftKey = false) => {
     if (rangeMode) {
@@ -129,6 +155,11 @@ export default function App() {
   return (
     <div className="app" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
       <header className="topbar" role="banner">
+        <div className="bulk-controls">
+          <button type="button" className="bulk-btn" onClick={deselectAllCurrentGen}>Select All</button>
+          <button type="button" className="bulk-btn" onClick={selectAllCurrentGen}>Deselect All</button>
+          <button type="button" className={`bulk-btn range-toggle ${rangeMode ? 'active' : ''}`} onClick={() => { setLastClicked(null); setRangeMode(v => !v) }} aria-pressed={rangeMode} title="Range select">Range Mode</button>
+        </div>
         <nav className="gen-controls" aria-label="Generation selection">
           <button type="button" className={`gen-btn ${route === 'gen_1' ? 'active' : ''}`} onClick={() => navigate('gen_1')} aria-pressed={route === 'gen_1'}>
             <img className="btn-sprite" src={`${spritesBase}/1-front.png`} alt="" onError={handleImgError} />
@@ -148,9 +179,7 @@ export default function App() {
             <img className="btn-sprite" src={`${spritesBase}/258-front.png`} alt="" onError={handleImgError} />
           </button>
         </nav>
-        <button type="button" className={`range-toggle ${rangeMode ? 'active' : ''}`} onClick={() => { setLastClicked(null); setRangeMode(v => !v) }} aria-pressed={rangeMode} title="Range select">
-          Range Mode
-        </button>
+        
       </header>
       <div className="swipe-viewport" style={{ transform: `translateX(${swipeOffset}px)`, transition: isSwipingVisual ? 'none' : 'transform .18s ease' }}>
         <div className="swipe-chev left" style={{ opacity: isSwipingVisual ? Math.min(1, Math.abs(swipeOffset) / 120) : 0 }}>‹</div>
