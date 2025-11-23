@@ -107,16 +107,6 @@ body {
   position: relative;
 }
 
-.card.last-clicked::after {
-  content: "";
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 10px;
-  height: 10px;
-  background: rgba(69, 149, 210, 0.95);
-  border-radius: 50%;
-}
 
 .caption {
   font-size: .8rem;
@@ -155,6 +145,29 @@ footer {
   z-index: 1000;
   padding: 0 1rem
 }
+
+/* Swipe chevrons shown while interacting on mobile */
+.swipe-chev {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 28px;
+  color: rgba(0,0,0,0.65);
+  background: rgba(255,255,255,0.7);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  transition: opacity .12s ease, transform .12s ease;
+  pointer-events: none;
+  z-index: 1200;
+}
+.swipe-chev.left { left: 8px }
+.swipe-chev.right { right: 8px }
+
+.swipe-viewport { position: relative }
 
 .gen-controls {
   display: flex;
