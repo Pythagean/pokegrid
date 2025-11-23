@@ -14,24 +14,17 @@ export default function PokeCard({ id, src, alt, isGrey, isLast, toggleGrey, set
       onTouchStart={(e) => {
         const el = e.currentTarget
         el._touchMoved = false
-        el._touchFired = false
         el._touchHandled = false
-        el._touchTimer = setTimeout(() => {
-          el._touchFired = true
-          el._touchHandled = true
-          setAnchor(id)
-        }, 450)
       }}
       onTouchMove={(e) => {
         const el = e.currentTarget
         el._touchMoved = true
-        if (el._touchTimer) { clearTimeout(el._touchTimer); el._touchTimer = null }
       }}
       onTouchEnd={(e) => {
         const el = e.currentTarget
-        if (el._touchTimer) { clearTimeout(el._touchTimer); el._touchTimer = null }
-        if (!el._touchFired) {
-          // short tap -> perform normal toggle
+        // treat a short tap (no move) as a toggle; mark handled to avoid duplicate click
+        if (!el._touchMoved) {
+          el._touchHandled = true
           toggleGrey(id, false)
         }
       }}
@@ -44,7 +37,7 @@ export default function PokeCard({ id, src, alt, isGrey, isLast, toggleGrey, set
       aria-pressed={isGrey}
     >
       <div className={`img-wrap ${loading ? 'loading' : 'loaded'}`}>
-        <img className="loading-icon" src={loadingIcon} alt="loading" />
+        <img className="loading-icon" src={loadingIcon} alt="" />
 
         <img
           src={currentSrc}

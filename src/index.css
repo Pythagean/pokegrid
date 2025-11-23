@@ -210,9 +210,10 @@ footer {
     gap: .25rem;
   }
 
-  .card img {
+  .card .main-img {
     height: 80px;
   }
+
 
   /* Make gen buttons and sprites smaller on mobile */
   .gen-controls { gap: .25rem }

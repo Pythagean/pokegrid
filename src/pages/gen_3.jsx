@@ -11,7 +11,6 @@ export default function Gen3({ greyed = new Set(), toggleGrey = () => {}, lastCl
           key={n}
           id={n}
           src={`${base}/${n}.png`}
-          alt={`${n}.png`}
           isGrey={greyed.has(n)}
           isLast={lastClicked === n}
           toggleGrey={toggleGrey}
