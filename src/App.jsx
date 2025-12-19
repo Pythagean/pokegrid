@@ -147,6 +147,12 @@ export default function App() {
     const t = e.touches[0]
     touchRef.current.deltaX = t.clientX - touchRef.current.startX
     touchRef.current.deltaY = t.clientY - touchRef.current.startY
+    
+    // If moving horizontally more than a small threshold, prevent default to enable swipe
+    if (Math.abs(touchRef.current.deltaX) > 15 && Math.abs(touchRef.current.deltaX) > Math.abs(touchRef.current.deltaY)) {
+      e.preventDefault()
+    }
+    
     // update visual offset (dampen a bit for nicer feel)
     const damp = Math.max(-window.innerWidth, Math.min(window.innerWidth, touchRef.current.deltaX * 0.7))
     setSwipeOffset(damp)
@@ -167,6 +173,8 @@ export default function App() {
     }
     touchRef.current.deltaX = 0
     touchRef.current.deltaY = 0
+    touchRef.current.startX = 0
+    touchRef.current.startY = 0
     // animate snap-back
     setSwipeOffset(0)
     // hide visual after a short delay to allow transition
@@ -174,7 +182,7 @@ export default function App() {
   }
 
   return (
-    <div className="app" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+    <div className="app">
       <header className="topbar" role="banner">
         <div className="bulk-controls">
           <button type="button" className="bulk-btn" onClick={deselectAllCurrentGen}>Select All</button>
@@ -206,7 +214,7 @@ export default function App() {
       <div className="swipe-viewport" style={{ transform: `translateX(${swipeOffset}px)`, transition: isSwipingVisual ? 'none' : 'transform .18s ease' }}>
         <div className="swipe-chev left" style={{ opacity: isSwipingVisual ? Math.min(1, Math.abs(swipeOffset) / 120) : 0 }}>‹</div>
         <div className="swipe-chev right" style={{ opacity: isSwipingVisual ? Math.min(1, Math.abs(swipeOffset) / 120) : 0 }}>›</div>
-        <main>
+        <main onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         {route === 'gen_1' && <Gen1 greyed={greyed} onSelect={onSelect} lastClicked={lastClicked} />}
         {route === 'gen_2' && <Gen2 greyed={greyed} onSelect={onSelect} lastClicked={lastClicked} />}
         {route === 'gen_3' && <Gen3 greyed={greyed} onSelect={onSelect} lastClicked={lastClicked} />}

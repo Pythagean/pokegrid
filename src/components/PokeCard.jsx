@@ -7,6 +7,7 @@ export default function PokeCard({ id, src, alt, isGrey, isLast, onSelect }) {
   const [triedAlt, setTriedAlt] = useState(false)
   const wrapRef = useRef(null)
   const imgRef = useRef(null)
+  const touchRef = useRef({ moved: false, handled: false })
 
   useEffect(() => {
     // If IntersectionObserver is available, defer setting the src until in view
@@ -27,34 +28,17 @@ export default function PokeCard({ id, src, alt, isGrey, isLast, onSelect }) {
     setCurrentSrc(src)
   }, [src])
 
+  const handleClick = () => {
+    onSelect(id, false)
+  }
+
   return (
     <div
       ref={wrapRef}
       className={`card ${isGrey ? 'greyed' : ''} ${isLast ? 'last-clicked' : ''}`}
       role="button"
       tabIndex={0}
-      onTouchStart={(e) => {
-        const el = e.currentTarget
-        el._touchMoved = false
-        el._touchHandled = false
-      }}
-      onTouchMove={(e) => {
-        const el = e.currentTarget
-        el._touchMoved = true
-      }}
-      onTouchEnd={(e) => {
-        const el = e.currentTarget
-        // treat a short tap (no move) as a toggle; mark handled to avoid duplicate click
-        if (!el._touchMoved) {
-          el._touchHandled = true
-          onSelect(id, false)
-        }
-      }}
-      onClick={(e) => {
-        const el = e.currentTarget
-        if (el._touchHandled) { el._touchHandled = false; return }
-        onSelect(id, e.shiftKey)
-      }}
+      onClick={handleClick}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(id, false) } }}
       aria-pressed={isGrey}
     >
