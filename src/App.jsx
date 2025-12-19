@@ -3,6 +3,7 @@ import Gen1 from './pages/gen_1'
 import Gen2 from './pages/gen_2'
 import Gen3 from './pages/gen_3'
 import { spritesBase, handleImgError } from './imageUtils'
+import PokemonDetailModal from './components/PokemonDetailModal'
 
 const normalizeRoute = (hash) => {
   const h = (hash || window.location.hash || '').replace('#', '')
@@ -17,9 +18,23 @@ export default function App() {
   const [swipeOffset, setSwipeOffset] = useState(0)
   const [isSwipingVisual, setIsSwipingVisual] = useState(false)
   const [rangeMode, setRangeMode] = useState(false)
+  const [infoMode, setInfoMode] = useState(false)
+  const [selectedPokemonId, setSelectedPokemonId] = useState(null)
+  const [pokemonData, setPokemonData] = useState([])
 
   // load saved greyed ids from localStorage
   // No longer loading from localStorage, session-only greyed state
+
+  // Load pokemon data once on mount
+  useEffect(() => {
+    fetch('data/pokemon_data.json')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to load pokemon data')
+        return res.json()
+      })
+      .then(data => setPokemonData(data))
+      .catch(err => console.error('Error loading pokemon data:', err))
+  }, [])
 
   const toggleGrey = (id, shift = false) => {
     setGreyed(prev => {
@@ -80,6 +95,12 @@ export default function App() {
 
   // handle select events coming from cards (encapsulates range-mode behavior)
   const onSelect = (id, shiftKey = false) => {
+    // If in info mode, open modal instead of toggling
+    if (infoMode) {
+      setSelectedPokemonId(id)
+      return
+    }
+    
     if (rangeMode) {
       // If no anchor, set anchor (do not toggle)
       if (lastClicked == null) {
@@ -158,7 +179,8 @@ export default function App() {
         <div className="bulk-controls">
           <button type="button" className="bulk-btn" onClick={deselectAllCurrentGen}>Select All</button>
           <button type="button" className="bulk-btn" onClick={selectAllCurrentGen}>Deselect All</button>
-          <button type="button" className={`bulk-btn range-toggle ${rangeMode ? 'active' : ''}`} onClick={() => { setLastClicked(null); setRangeMode(v => !v) }} aria-pressed={rangeMode} title="Range select">Range Mode</button>
+          <button type="button" className={`bulk-btn range-toggle ${rangeMode ? 'active' : ''}`} onClick={() => { setLastClicked(null); setInfoMode(false); setRangeMode(v => !v) }} aria-pressed={rangeMode} title="Range select">Range Mode</button>
+          <button type="button" className={`bulk-btn info-toggle ${infoMode ? 'active' : ''}`} onClick={() => { setLastClicked(null); setRangeMode(false); setInfoMode(v => !v) }} aria-pressed={infoMode} title="Info mode">Info Mode</button>
         </div>
         <nav className="gen-controls" aria-label="Generation selection">
           <button type="button" className={`gen-btn ${route === 'gen_1' ? 'active' : ''}`} onClick={() => navigate('gen_1')} aria-pressed={route === 'gen_1'}>
@@ -190,6 +212,13 @@ export default function App() {
         {route === 'gen_3' && <Gen3 greyed={greyed} onSelect={onSelect} lastClicked={lastClicked} />}
         </main>
       </div>
+      {selectedPokemonId && (
+        <PokemonDetailModal 
+          pokemonId={selectedPokemonId}
+          pokemonData={pokemonData}
+          onClose={() => setSelectedPokemonId(null)} 
+        />
+      )}
     </div>
   )
 }
