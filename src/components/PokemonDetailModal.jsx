@@ -63,8 +63,8 @@ export default function PokemonDetailModal({ pokemonId, pokemonData = [], onClos
                 <span className="detail-value">{data.weight} kg</span>
               </div>
               <div className="detail-row">
-                <span className="detail-label">Generation:</span>
-                <span className="detail-value">{data.generation}</span>
+                <span className="detail-label">Evolution Stage:</span>
+                <span className="detail-value">{data.evolution_stage}</span>
               </div>
               {data.habitat && (
                 <div className="detail-row">
