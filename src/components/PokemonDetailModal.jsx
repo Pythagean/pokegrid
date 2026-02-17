@@ -37,7 +37,7 @@ export default function PokemonDetailModal({ pokemonId, pokemonData = [], onClos
           <>
             <div className="modal-header">
               <img 
-                src={`https://raw.githubusercontent.com/Pythagean/pokedle_assets/main/images/${data.id}.png`}
+                src={`https://raw.githubusercontent.com/Pythagean/pokedle_assets/main/pokegrid_images/${data.id}.png`}
                 alt={data.name}
                 className="modal-image"
               />
