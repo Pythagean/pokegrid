@@ -19,6 +19,7 @@ export default function App() {
   const [isSwipingVisual, setIsSwipingVisual] = useState(false)
   const [rangeMode, setRangeMode] = useState(false)
   const [infoMode, setInfoMode] = useState(false)
+  const [spriteMode, setSpriteMode] = useState(false)
   const [selectedPokemonId, setSelectedPokemonId] = useState(null)
   const [pokemonData, setPokemonData] = useState([])
 
@@ -189,6 +190,7 @@ export default function App() {
           <button type="button" className="bulk-btn" onClick={selectAllCurrentGen}>Deselect All</button>
           <button type="button" className={`bulk-btn range-toggle ${rangeMode ? 'active' : ''}`} onClick={() => { setLastClicked(null); setInfoMode(false); setRangeMode(v => !v) }} aria-pressed={rangeMode} title="Range select">Range Mode</button>
           <button type="button" className={`bulk-btn info-toggle ${infoMode ? 'active' : ''}`} onClick={() => { setLastClicked(null); setRangeMode(false); setInfoMode(v => !v) }} aria-pressed={infoMode} title="Info mode">Info Mode</button>
+          <button type="button" className={`bulk-btn sprite-toggle ${spriteMode ? 'active' : ''}`} onClick={() => setSpriteMode(v => !v)} aria-pressed={spriteMode} title="Sprite mode">Sprite Mode</button>
         </div>
         <nav className="gen-controls" aria-label="Generation selection">
           <button type="button" className={`gen-btn ${route === 'gen_1' ? 'active' : ''}`} onClick={() => navigate('gen_1')} aria-pressed={route === 'gen_1'}>
@@ -215,15 +217,16 @@ export default function App() {
         <div className="swipe-chev left" style={{ opacity: isSwipingVisual ? Math.min(1, Math.abs(swipeOffset) / 120) : 0 }}>‹</div>
         <div className="swipe-chev right" style={{ opacity: isSwipingVisual ? Math.min(1, Math.abs(swipeOffset) / 120) : 0 }}>›</div>
         <main onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
-        {route === 'gen_1' && <Gen1 greyed={greyed} onSelect={onSelect} lastClicked={lastClicked} />}
-        {route === 'gen_2' && <Gen2 greyed={greyed} onSelect={onSelect} lastClicked={lastClicked} />}
-        {route === 'gen_3' && <Gen3 greyed={greyed} onSelect={onSelect} lastClicked={lastClicked} />}
+        {route === 'gen_1' && <Gen1 greyed={greyed} onSelect={onSelect} lastClicked={lastClicked} spriteMode={spriteMode} />}
+        {route === 'gen_2' && <Gen2 greyed={greyed} onSelect={onSelect} lastClicked={lastClicked} spriteMode={spriteMode} />}
+        {route === 'gen_3' && <Gen3 greyed={greyed} onSelect={onSelect} lastClicked={lastClicked} spriteMode={spriteMode} />}
         </main>
       </div>
       {selectedPokemonId && (
         <PokemonDetailModal 
           pokemonId={selectedPokemonId}
           pokemonData={pokemonData}
+          spriteMode={spriteMode}
           onClose={() => setSelectedPokemonId(null)} 
         />
       )}

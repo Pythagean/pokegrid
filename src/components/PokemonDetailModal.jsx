@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { getPokemonImageUrl } from '../imageUtils'
 
-export default function PokemonDetailModal({ pokemonId, pokemonData = [], onClose }) {
+export default function PokemonDetailModal({ pokemonId, pokemonData = [], spriteMode = false, onClose }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -37,7 +38,7 @@ export default function PokemonDetailModal({ pokemonId, pokemonData = [], onClos
           <>
             <div className="modal-header">
               <img 
-                src={`https://raw.githubusercontent.com/Pythagean/pokedle_assets/main/pokegrid_images/${data.id}.png`}
+                src={getPokemonImageUrl(data.id, spriteMode)}
                 alt={data.name}
                 className="modal-image"
               />

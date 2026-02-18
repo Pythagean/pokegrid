@@ -283,7 +283,8 @@ footer {
 
   /* show range toggle and info toggle on mobile only */
   .range-toggle,
-  .info-toggle {
+  .info-toggle,
+  .sprite-toggle {
     display: inline-flex;
     align-items: center;
     margin-left: .5rem;
@@ -455,7 +456,8 @@ footer {
 }
 
 /* Info button style - matches Range Mode button */
-.info-toggle {
+.info-toggle,
+.sprite-toggle {
   margin-left: .6rem;
   padding: .35rem .6rem;
   border-radius: 8px;
@@ -464,7 +466,8 @@ footer {
   cursor: pointer;
   font-weight: 600;
 }
-.info-toggle.active {
+.info-toggle.active,
+.sprite-toggle.active {
   background: #4595d2;
   color: #fff;
   border-color: #2f86c6;
