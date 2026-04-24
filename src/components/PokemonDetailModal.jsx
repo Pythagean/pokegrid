@@ -4,6 +4,7 @@ import { getPokemonImageUrl } from '../imageUtils'
 export default function PokemonDetailModal({ pokemonId, pokemonData = [], spriteMode = false, onClose }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [localSpriteMode, setLocalSpriteMode] = useState(spriteMode)
 
   useEffect(() => {
     if (!pokemonId || pokemonData.length === 0) {
@@ -19,6 +20,10 @@ export default function PokemonDetailModal({ pokemonId, pokemonData = [], sprite
       setLoading(false)
     }
   }, [pokemonId, pokemonData])
+
+  useEffect(() => {
+    setLocalSpriteMode(spriteMode)
+  }, [spriteMode])
 
   if (!pokemonId) return null
 
@@ -38,7 +43,7 @@ export default function PokemonDetailModal({ pokemonId, pokemonData = [], sprite
           <>
             <div className="modal-header">
               <img 
-                src={getPokemonImageUrl(data.id, spriteMode)}
+                src={getPokemonImageUrl(data.id, localSpriteMode)}
                 alt={data.name}
                 className="modal-image"
               />
@@ -51,6 +56,14 @@ export default function PokemonDetailModal({ pokemonId, pokemonData = [], sprite
                     </span>
                   ))}
                 </div>
+                <button
+                  type="button"
+                  className={`sprite-toggle ${localSpriteMode ? 'active' : ''}`}
+                  onClick={() => setLocalSpriteMode(s => !s)}
+                  aria-pressed={localSpriteMode}
+                >
+                  Sprite
+                </button>
               </div>
             </div>
             
