@@ -334,7 +334,7 @@ footer {
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
-  max-width: 350px;
+  max-width: 820px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
@@ -374,8 +374,9 @@ footer {
 }
 
 .modal-image {
-  width: 120px;
-  height: 120px;
+  width: 240px;
+  height: 240px;
+  max-width: 75%;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -485,7 +486,7 @@ footer {
   }
   
   .modal-image {
-    width: 100px;
-    height: 100px;
+    width: 240px;
+    height: 240px;
   }
 }
